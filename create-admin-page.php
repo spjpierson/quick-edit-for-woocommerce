@@ -63,7 +63,8 @@ class CreateAdminPage{
                 echo'</td>';
                 echo '<td>'.$product->get_name().'</td>';
                 echo '<td>'.$product->get_type().'</td>';
-                echo '<td>$<input type="number" step="0.01" value="'.floatval($product->get_price()).'"/></td>';
+                $product_price = number_format(floatval($product->get_price()),2,".",",");
+                echo '<td>$<input type="number" step="0.01" value="'.$product_price.'"/></td>';
                 echo '</tr>';
           }
 
@@ -79,7 +80,8 @@ class CreateAdminPage{
                         echo'</td>';
                         echo '<td>'.$child_product->get_name().'</td>';
                         echo '<td>'.$child_product->get_type().'</td>';
-                        echo '<td>$<input type="number" step="0.01" value="'.floatval($child_product->get_price()).'"/></td>';
+                        $child_product_price = number_format(floatval($child_product->get_price()),2,".",",");
+                        echo '<td>$<input type="number" step="0.01" value="'.$child_product_price.'"/></td>';
                         echo '</tr>';
                     }
                 }
