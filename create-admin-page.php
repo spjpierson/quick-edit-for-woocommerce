@@ -1,6 +1,6 @@
 <?php
 class CreateAdminPage{
-
+ 
 
     public function __construct(){
         add_action( "admin_menu", array($this,"quick_edit_page"));
@@ -54,15 +54,36 @@ class CreateAdminPage{
         echo '<tr>';
         // Loop through each product
         foreach( $products as $product ) {
-            echo '<tr>';
-            echo '<td>'.$product->get_id().'</td>';
-            echo '<td>';
-            echo '<img height="25px" width="25px" src="'.wp_get_attachment_url( $product->get_image_id() ).'"/>';
-            echo'</td>';
-            echo '<td>'.$product->get_name().'</td>';
-            echo '<td>'.$product->get_type().'</td>';
-            echo '<td>'.floatval($product->get_price()).'</td>';
-            echo '</tr>';
+           
+          if(floatval($product->get_price()) != 0 ){  
+                echo '<tr>';
+                echo '<td>'.$product->get_id().'</td>';
+                echo '<td>';
+                echo '<img height="25px" width="25px" src="'.wp_get_attachment_url( $product->get_image_id() ).'"/>';
+                echo'</td>';
+                echo '<td>'.$product->get_name().'</td>';
+                echo '<td>'.$product->get_type().'</td>';
+                echo '<td>$<input type="number" step="0.01" value="'.floatval($product->get_price()).'"/></td>';
+                echo '</tr>';
+          }
+
+            if($product->get_type() == "variable"){
+                $children = $product->get_children();
+                foreach($children as $child_id){
+                    $child_product = wc_get_product($child_id);
+                    if(floatval($child_product->get_price()) != 0 ){
+                        echo '<tr>';
+                        echo '<td>'.$child_product->get_id().'</td>';
+                        echo '<td>';
+                        echo '<img height="25px" width="25px" src="'.wp_get_attachment_url( $child_product->get_image_id() ).'"/>';
+                        echo'</td>';
+                        echo '<td>'.$child_product->get_name().'</td>';
+                        echo '<td>'.$child_product->get_type().'</td>';
+                        echo '<td>$<input type="number" step="0.01" value="'.floatval($child_product->get_price()).'"/></td>';
+                        echo '</tr>';
+                    }
+                }
+            }
         }
 
         echo '<table>';
