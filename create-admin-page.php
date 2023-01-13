@@ -5,14 +5,15 @@ class CreateAdminPage{
     public function __construct(){
         add_action( 'init', array($this,'script_enqueuer') );
         add_action( "admin_menu", array($this,"quick_edit_page"));
+        add_action( 'wp_ajax_update_batch_products', array($this,'update_batch_products_callbacks') );    
+        add_action( 'wp_ajax_nopriv_update_batch_products', array($this,'update_batch_products_callbacks') );  
     }
 
     
 
    public function script_enqueuer() {
         wp_enqueue_script( 'jquery' );
-        wp_enqueue_script( 'google', 'https://www.gstatic.com/charts/loader.js', '1.0.0' , false );
-
+        wp_enqueue_script( 'updates-products', plugins_url('js/updates-products.js', __FILE__), array(), '1.0', true );
     }
 
     public function quick_edit_page(){
@@ -120,25 +121,27 @@ class CreateAdminPage{
         echo '<table>';
         echo '<input id="product_count" type="hidden" value="'.$total_products.'"/>';
 
-        ?>
-            <script>
-               function upates_all_products(){
-                    var $ = jQuery;
-                    var product_count = $("#product_count").val();
-                    var batch_products = [];
-                    
-                    for(var i = 0; i < product_count; ++i){
-                        var id = "#"+i+"-index";
-                        var product_id = $(id).val();
-                        var price_id = "#"+product_id +"-price";
-                        var product_price = $(price_id).val();
-                        batch_products.push(product_id+"_"+product_price);
-                    }
+    }
 
-               }
-            </script>
-        <?php
+    public function update_batch_products_callbacks_function(){
+        $product_ids = $_POST['products_ids'];
+        $products_prices = $_POST['products_prices'];
+
+        echo "some";
+        
+        if(count($product_ids) === count($products_price )){
+            for($i = 0; $i < count($product_ids); $i++){
+                $product = wc_get_product($product_ids[$i]);
+                $product->set_price(floatval($products_prices[$i]));
+                echo "Prices has been updated";
+            }
+        }else{
+            echo "Some Went Wrong id and prices don't add up";
+        }
+        
 
     }
+
+     
 }
 ?>
