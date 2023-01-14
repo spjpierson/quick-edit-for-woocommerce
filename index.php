@@ -15,9 +15,4 @@ if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins',
 include('create-admin-page.php');
 $quick_edit_page = new CreateAdminPage();
 
-function update_batch_products_callbacks(){
-    echo json_encode("test");
- }
-
-
 ?>

@@ -123,25 +123,26 @@ class CreateAdminPage{
 
     }
 
-    public function update_batch_products_callbacks_function(){
+    public function update_batch_products_callbacks(){
         $product_ids = $_POST['products_ids'];
         $products_prices = $_POST['products_prices'];
 
-        echo "some";
-        
-        if(count($product_ids) === count($products_price )){
+        if(count($product_ids) === count($products_prices) ){
+            
+            // This is necessary for WC 3.0+
+            if ( is_admin() && ! defined( 'DOING_AJAX' ) )
+                    return;
+
             for($i = 0; $i < count($product_ids); $i++){
-                $product = wc_get_product($product_ids[$i]);
-                $product->set_price(floatval($products_prices[$i]));
-                echo "Prices has been updated";
-            }
+                update_post_meta($product_ids[$i],'_price',$products_prices[$i]);
+        }
+            echo json_encode("All Product has been updated");
+            wp_die();
         }else{
-            echo "Some Went Wrong id and prices don't add up";
+            echo json_encode("something went wrong");
+            wp_die();
         }
         
-
     }
-
-     
 }
 ?>
