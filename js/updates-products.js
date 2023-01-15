@@ -13,7 +13,6 @@ function upates_all_products(){
         batch_products_price.push(product_price);
     }
 
-    alert("button was click");
   
     jQuery.ajax({
         type:'POST',

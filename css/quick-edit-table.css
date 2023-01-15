@@ -1,0 +1,18 @@
+
+.quick-edit-table {
+font-family: arial, sans-serif;
+border-collapse: collapse;
+width: 98%;
+margin-top:1%;
+
+}
+
+.quick-edit-table td, .quick-edit-table th {
+border: 1px solid #dddddd;
+text-align: left;
+padding: 8px;
+}
+
+.quick-edit-table tr:nth-child(even) {
+background-color: #dddddd;
+}

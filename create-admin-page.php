@@ -14,6 +14,7 @@ class CreateAdminPage{
    public function script_enqueuer() {
         wp_enqueue_script( 'jquery' );
         wp_enqueue_script( 'updates-products', plugins_url('js/updates-products.js', __FILE__), array(), '1.0', true );
+        wp_enqueue_style( 'quick-edit-style', plugins_url( 'css/quick-edit-table.css', __FILE__ ) );
     }
 
     public function quick_edit_page(){
@@ -28,33 +29,11 @@ class CreateAdminPage{
     }
 
     public function display_page_content(){
-        ?>
-        <style>
-            table {
-            font-family: arial, sans-serif;
-            border-collapse: collapse;
-            width: 98%;
-            margin-top:1%;
-        
-        }
-  
-        td, th {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 8px;
-  }
-  
-        tr:nth-child(even) {
-         background-color: #dddddd;
-  }
-       </style> 
-        <?php
-
         
         // Get all products
         $products = wc_get_products( array('limit' => -1) );
         $total_products = 0;
-        echo '<table>';
+        echo '<table class="quick-edit-table">';
         echo '<tr>';
         echo '<th>Idex</th>';
         echo '<th>ID</th>';
@@ -80,7 +59,7 @@ class CreateAdminPage{
                 $product_price = number_format(floatval($product->get_price()),2,".",",");
                 echo '<td>$'.$product_price.'</td>';
                 echo '<td><input id="'.$product->get_id().'-price" type="number" step="0.01" value="'.$product_price.'"/></td>';
-                echo '<td> <input id="'.$total_products.'-index" value="'.$product->get_id().'" /></td>';
+                echo '<td> <input id="'.$total_products.'-index" value="'.$product->get_id().'" type="hidden" /></td>';
                 echo '</tr>';
                 $total_products++;
           }
@@ -101,7 +80,7 @@ class CreateAdminPage{
                         $child_product_price = number_format(floatval($child_product->get_price()),2,".",",");
                         echo '<td>$'.$child_product_price.'</td>';
                         echo '<td><input id="'.$child_product->get_id().'-price" type="number" step="0.01" value="'.$child_product_price.'"/></td>';
-                        echo '<td> <input id="'.$total_products.'-index" value="'.$child_product->get_id().'" /></td>';
+                        echo '<td> <input id="'.$total_products.'-index" value="'.$child_product->get_id().'" type="hidden" /></td>';
                         echo '</tr>';
                         $total_products++;
                     }
@@ -134,7 +113,11 @@ class CreateAdminPage{
                     return;
 
             for($i = 0; $i < count($product_ids); $i++){
-                update_post_meta($product_ids[$i],'_price',$products_prices[$i]);
+                //update_post_meta($product_ids[$i],'_price',$products_prices[$i]);
+                //update_post_meta($product_ids[$i],'_regular_price',$products_prices[$i]);
+                $product = wc_get_product($product_ids[$i]);
+                $product->set_regular_price($products_prices[$i]);
+                $product->save();
         }
             echo json_encode("All Product has been updated");
             wp_die();
