@@ -19,7 +19,7 @@ class CreateAdminPage{
 
     public function quick_edit_page(){
         add_submenu_page( 
-            'woocommerce', 
+            'edit.php?post_type=product', 
             "Product Price Quick Edit", 
             "Quick Edit", 
             "manage_options", 

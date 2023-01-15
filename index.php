@@ -3,7 +3,7 @@
 /*
 Plugin Name: Quick Price Edit For WooCommerce
 Plugin URI: https://github.com/spjpierson/quick-edit-for-woocommerce
-Description: A plugin to update the price of products quickly.
+Description: A plugin to update the price of products quickly in one page under product tag you be able to update all your product price without having to go to all prices.
 Version: 1.0
 Requires at least: 5.2
 Requires PHP:      7.2

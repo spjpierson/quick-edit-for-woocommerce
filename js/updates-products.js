@@ -1,8 +1,8 @@
 function upates_all_products(){
-    var $ = jQuery;
-    var product_count = $("#product_count").val();
-    var batch_products_id = [];
-    var batch_products_price = [];
+    const $ = jQuery;
+    const product_count = $('#product_count').val();
+    let batch_products_id = [];
+    let batch_products_price = [];
     
     for(var i = 0; i < product_count; ++i){
         var id = "#"+i+"-index";
@@ -13,6 +13,7 @@ function upates_all_products(){
         batch_products_price.push(product_price);
     }
 
+    alert("Price Data Was Sent You Should Get a Message In Less Then 30 Seconds");
   
     jQuery.ajax({
         type:'POST',
@@ -25,6 +26,7 @@ function upates_all_products(){
         },
         success:function(response){
             alert(response);
+            window.location.reload();
         },
         fail:function(response){
             alert(response);
