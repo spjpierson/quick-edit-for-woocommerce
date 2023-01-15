@@ -113,8 +113,12 @@ class CreateAdminPage{
                     return;
 
             for($i = 0; $i < count($product_ids); $i++){
-                //update_post_meta($product_ids[$i],'_price',$products_prices[$i]);
-                //update_post_meta($product_ids[$i],'_regular_price',$products_prices[$i]);
+
+                if (!is_numeric($product_ids[$i]) || !is_numeric($products_prices[$i])) {
+                    echo json_encode("Error: Product IDs and Prices must be numbers!");
+                    wp_die();
+                }
+
                 $product = wc_get_product($product_ids[$i]);
                 $product->set_regular_price($products_prices[$i]);
                 $product->save();
